@@ -125,6 +125,9 @@ class BaseOptionsMenu extends MusicBeatSubstate
 		}
 
 		changeSelection();
+		#if mobileC
+        addVirtualPad(LEFT_FULL, A_B);
+        #end
 		reloadCheckboxes();
 	}
 
