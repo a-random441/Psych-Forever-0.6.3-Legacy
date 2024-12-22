@@ -396,14 +396,14 @@ class Paths
 
 	static public function modFolders(key:String) { // changed the order so mod folders COULD BE FUCKING RECOGNIZ-
 		if(currentModDirectory != null && currentModDirectory.length > 0) {
-			var fileToCheck:String = mods(currentModDirectory + '/' + key);
+			var fileToCheck:String = mods(currentModDirectory #if !android + '/' #end + key);
 			if(FileSystem.exists(SUtil.getStorageDirectory() + fileToCheck)) {
 				return fileToCheck;
 		}
 	}
 
 		for(mod in getGlobalMods()){
-			var fileToCheck:String = mods(mod + '/' + key);
+			var fileToCheck:String = mods(mod #if !android + '/' #end + key);
 			if(FileSystem.exists(SUtil.getStorageDirectory() + fileToCheck))
 				return fileToCheck;
 
