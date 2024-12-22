@@ -198,6 +198,10 @@ class NoteOffsetState extends MusicBeatState
 		Conductor.changeBPM(128.0);
 		FlxG.sound.playMusic(Paths.music('offsetSong'), 1, true);
 
+		#if mobileC
+        addVirtualPad(LEFT_FULL, A_B_C_X_Y_Z);
+        #end
+
 		super.create();
 	}
 
@@ -216,15 +220,15 @@ class NoteOffsetState extends MusicBeatState
 		if(onComboMenu)
 		{
 			var controlArray:Array<Bool> = [
-				FlxG.keys.justPressed.LEFT,
-				FlxG.keys.justPressed.RIGHT,
-				FlxG.keys.justPressed.UP,
-				FlxG.keys.justPressed.DOWN,
+				FlxG.keys.justPressed.LEFT #if mobileC || virtualPad.buttonLeft.justPressed #end,
+				FlxG.keys.justPressed.RIGHT #if mobileC || virtualPad.buttonRight.justPressed #end,
+				FlxG.keys.justPressed.UP #if mobileC || virtualPad.buttonUp.justPressed #end,
+				FlxG.keys.justPressed.DOWN #if mobileC || virtualPad.buttonDown.justPressed #end,
 			
-				FlxG.keys.justPressed.A,
-				FlxG.keys.justPressed.D,
-				FlxG.keys.justPressed.W,
-				FlxG.keys.justPressed.S
+				FlxG.keys.justPressed.A #if mobileC || virtualPad.buttonA.justPressed #end,
+				FlxG.keys.justPressed.D #if mobileC || virtualPad.buttonB.justPressed #end,
+				FlxG.keys.justPressed.W #if mobileC || virtualPad.buttonC.justPressed #end,
+				FlxG.keys.justPressed.S #if mobileC || virtualPad.buttonX.justPressed #end
 			];
 
 			if(controlArray.contains(true))
@@ -334,7 +338,7 @@ class NoteOffsetState extends MusicBeatState
 				updateNoteDelay();
 			}
 
-			if(controls.RESET)
+			if(controls.RESET #if mobileC || virtualPad.buttonY.justPressed #end)
 			{
 				holdTime = 0;
 				barPercent = 0;
@@ -342,13 +346,13 @@ class NoteOffsetState extends MusicBeatState
 			}
 		}
 
-		if(controls.ACCEPT)
+		if(controls.ACCEPT #if mobileC || virtualPad.buttonZ.justPressed #end)
 		{
 			onComboMenu = !onComboMenu;
 			updateMode();
 		}
 
-		if(controls.BACK)
+		if(controls.BACK #if android || FlxG.android.justReleased.BACK #end)
 		{
 			if(zoomTween != null) zoomTween.cancel();
 			if(beatTween != null) beatTween.cancel();

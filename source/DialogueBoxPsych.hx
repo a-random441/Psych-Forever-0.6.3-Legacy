@@ -93,14 +93,14 @@ class DialogueCharacter extends FlxSprite
 
 		#if MODS_ALLOWED
 		var path:String = Paths.modFolders(characterPath);
-		if (!FileSystem.exists(path)) {
+		if (!FileSystem.exists(SUtil.getStorageDirectory() + path)) {
 			path = Paths.getPreloadPath(characterPath);
 		}
 
-		if(!FileSystem.exists(path)) {
+		if(!FileSystem.exists(SUtil.getStorageDirectory() + path)) {
 			path = Paths.getPreloadPath('images/dialogue/' + DEFAULT_CHARACTER + '.json');
 		}
-		rawJson = File.getContent(path);
+		rawJson = File.getContent(SUtil.getStorageDirectory() + path);
 
 		#else
 		var path:String = Paths.getPreloadPath(characterPath);
@@ -303,7 +303,7 @@ class DialogueBoxPsych extends FlxSpriteGroup
 			bgFade.alpha += 0.5 * elapsed;
 			if(bgFade.alpha > 0.5) bgFade.alpha = 0.5;
 
-			if(PlayerSettings.player1.controls.ACCEPT || FlxG.keys.justPressed.SPACE) {
+			if(PlayerSettings.player1.controls.ACCEPT || FlxG.keys.justPressed.SPACE #if mobileC || justTouched #end) {
 				if(!daText.finishedText) {
 					daText.finishText();
 					if(skipDialogueThing != null) {
@@ -516,9 +516,9 @@ class DialogueBoxPsych extends FlxSpriteGroup
 
 	public static function parseDialogue(path:String):DialogueFile {
 		#if MODS_ALLOWED
-		if(FileSystem.exists(path))
+		if(FileSystem.exists(SUtil.getStorageDirectory() + path))
 		{
-			return cast Json.parse(File.getContent(path));
+			return cast Json.parse(File.getContent(SUtil.getStorageDirectory() + path));
 		}
 		#end
 		return cast Json.parse(Assets.getText(path));
