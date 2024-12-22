@@ -34,8 +34,6 @@ class DialogueBox extends FlxSpriteGroup
 
 	var handSelect:FlxSprite;
 	var bgFade:FlxSprite;
-	
-	var justTouched:Bool = false;
 
 	public function new(talkingRight:Bool = true, ?dialogueList:Array<String>)
 	{
@@ -151,7 +149,7 @@ class DialogueBox extends FlxSpriteGroup
 	var dialogueStarted:Bool = false;
 	var dialogueEnded:Bool = false;
 
-	override function update(elapsed:Float)
+	override dynamic function update(elapsed:Float)
 	{
 		// HARD CODING CUZ IM STUPDI
 		if (PlayState.SONG.song.toLowerCase() == 'roses')
@@ -179,10 +177,18 @@ class DialogueBox extends FlxSpriteGroup
 			startDialogue();
 			dialogueStarted = true;
 		}
+		#if mobileC
+		var justTouched:Bool = false;
 
 		for (touch in FlxG.touches.list)
-			if (touch.justPressed)
+		{
+			justTouched = false;
+			
+			if (touch.justReleased){
 				justTouched = true;
+			}
+		}
+		#end
 
 		if(PlayerSettings.player1.controls.ACCEPT #if mobileC || justTouched #end)
 		{

@@ -303,7 +303,20 @@ class DialogueBoxPsych extends FlxSpriteGroup
 			bgFade.alpha += 0.5 * elapsed;
 			if(bgFade.alpha > 0.5) bgFade.alpha = 0.5;
 
-			if(PlayerSettings.player1.controls.ACCEPT || FlxG.keys.justPressed.SPACE #if mobileC || justTouched #end) {
+			#if mobileC
+			var justTouched2:Bool = false;
+	
+			for (touch in FlxG.touches.list)
+			{
+				justTouched2 = false;
+				
+				if (touch.justReleased){
+					justTouched2 = true;
+				}
+			}
+			#end
+	
+			if(PlayerSettings.player1.controls.ACCEPT || FlxG.keys.justPressed.SPACE #if mobileC || justTouched2 #end) {
 				if(!daText.finishedText) {
 					daText.finishText();
 					if(skipDialogueThing != null) {
