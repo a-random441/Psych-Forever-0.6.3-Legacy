@@ -394,6 +394,23 @@ class Paths
 		return currentTrackedSounds.get(gottenPath);
 	}
 
+	static public function modFolders(key:String) { // changed the order so mod folders COULD BE FUCKING RECOGNIZ-
+		if(currentModDirectory != null && currentModDirectory.length > 0) {
+			var fileToCheck:String = mods(currentModDirectory + '/' + key);
+			if(FileSystem.exists(SUtil.getStorageDirectory() + fileToCheck)) {
+				return fileToCheck;
+		}
+	}
+
+		for(mod in getGlobalMods()){
+			var fileToCheck:String = mods(mod + '/' + key);
+			if(FileSystem.exists(SUtil.getStorageDirectory() + fileToCheck))
+				return fileToCheck;
+
+		}
+		return SUtil.getStorageDirectory() + 'mods/' + key;
+	}
+
 	#if MODS_ALLOWED
 	inline static public function mods(key:String = '') {
 		return SUtil.getStorageDirectory() + 'mods/' + key;
@@ -440,23 +457,6 @@ class Paths
 	inline static public function modsAchievements(key:String) {
 		return modFolders('achievements/' + key + '.json');
 	}*/
-
-	static public function modFolders(key:String) {
-		if(currentModDirectory != null && currentModDirectory.length > 0) {
-			var fileToCheck:String = mods(currentModDirectory + '/' + key);
-			if(FileSystem.exists(SUtil.getStorageDirectory() + fileToCheck)) {
-				return fileToCheck;
-			}
-		}
-
-		for(mod in getGlobalMods()){
-			var fileToCheck:String = mods(mod + '/' + key);
-			if(FileSystem.exists(SUtil.getStorageDirectory() + fileToCheck))
-				return fileToCheck;
-
-		}
-		return SUtil.getStorageDirectory() + 'mods/' + key;
-	}
 
 	public static var globalMods:Array<String> = [];
 
