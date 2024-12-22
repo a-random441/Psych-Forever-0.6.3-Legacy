@@ -132,7 +132,80 @@ jobs:
       - name: Compile
         run: haxelib run lime build mac --app-version="4.0.0-${{ github.run_id}}"
       - name: Publish Artifact
-        uses: actions/upload-artifact@v2.2.4
+        uses: actions/upload-artifact@v4
         with:
           name: macBuild
           path: export/release/macos/bin
+  buildAndroid:
+   runs-on: ubuntu-24.04
+   steps:
+          - uses: actions/checkout@v2
+
+          - name: Setup Android NDK
+            uses: nttld/setup-ndk@v1
+            id: setup-ndk
+            with:
+               ndk-version: r21e
+          - name: Setup Java JDK
+            uses: actions/setup-java@main
+            with:
+            distribution: 'temurin'
+            java-version: '17'
+          - name: Setup Android SDK
+            uses: android-actions/setup-android@v2.0.2
+          - name: Setup gradle.properties
+            uses: SimonMarquis/ci-gradle-properties-action@v1
+            with:
+               path: .github/gradle.properties
+          - name: Setup build.gradle
+            uses: thecodemonkey/action-get-gradle-version@v1.0
+            with:
+               file: .github/build.gradle
+              
+
+          - uses: krdlab/setup-haxe@v1.5.1
+            with:
+               haxe-version: 4.2.5
+          - name: Install Haxelib
+            run: |
+               haxelib setup ~/haxelib
+               haxelib install hxcpp > /dev/null
+               haxelib install lime 8.0.1
+               haxelib install openfl 9.2.1
+               haxelib --never install flixel 5.2.2
+               haxelib install flixel-tools
+               haxelib install flixel-ui 2.5.0
+               haxelib install flixel-addons 3.0.2
+               haxelib install tjson
+               haxelib install hxjsonast
+               haxelib install hxCodec
+               haxelib git linc_luajit https://github.com/nebulazorua/linc_luajit
+               haxelib install hscript
+               haxelib git extension-androidtools https://github.com/MAJigsaw77/extension-androidtools.git c0f09f2399780091de02eb40caf5ac4f695f9cac
+               haxelib git hscript-ex https://github.com/ianharrigan/hscript-ex
+               haxelib git discord_rpc https://github.com/Aidan63/linc_discord-rpc
+               haxelib install hxcpp-debug-server
+               haxelib list
+          - name: Configure Android
+            run: |
+             haxelib run lime setup -alias -y
+             haxelib run lime config ANDROID_SDK $ANDROID_HOME
+             haxelib run lime config ANDROID_NDK_ROOT $ANDROID_NDK_HOME
+             haxelib run lime config JAVA_HOME $JAVA_HOME
+             haxelib run lime config ANDROID_SETUP true
+            env:
+              ANDROID_NDK_HOME: ${{ steps.setup-ndk.outputs.ndk-path }}
+          - name: Install HXCPP and Rebuild it
+            run: |
+             haxelib git hxcpp https://github.com/mcagabe19-stuff/hxcpp.git
+             haxelib run lime rebuild hxcpp
+          - name: Create Version Tag
+            run: echo "${{github.run_id}}" > VERSION
+          - name: Compile
+            run: haxelib run lime build android --app-version="4.0.0-${{ github.run_id}}"
+          - name: Publish Artifact
+            uses: actions/upload-artifact@v4
+            with:
+              name: androidBuild
+              path: export/release/macos/bin
+       
