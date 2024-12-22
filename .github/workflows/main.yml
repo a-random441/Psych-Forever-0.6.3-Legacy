@@ -149,8 +149,8 @@ jobs:
           - name: Setup Java JDK
             uses: actions/setup-java@main
             with:
-            distribution: 'temurin'
-            java-version: '17'
+             distribution: 'temurin'
+             java-version: '17'
           - name: Setup Android SDK
             uses: android-actions/setup-android@v2.0.2
           - name: Setup gradle.properties
