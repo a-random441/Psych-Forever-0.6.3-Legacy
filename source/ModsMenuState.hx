@@ -90,7 +90,8 @@ class ModsMenuState extends MusicBeatState
 		visibleWhenNoMods.push(noModsTxt);
 
 		var path:String = 'modsList.txt';
-		if(FileSystem.exists(SUtil.getStorageDirectory() + path))
+		#if android var storagePath:String = SUtil.getStorageDirectory() + path; #end
+		if(FileSystem.exists(#if !desktop storagePath #else path #end))
 		{
 			var leMods:Array<String> = CoolUtil.coolTextFile(path);
 			for (i in 0...leMods.length)
