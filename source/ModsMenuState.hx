@@ -477,7 +477,7 @@ class ModsMenuState extends MusicBeatState
 			noModsTxt.alpha = 1 - Math.sin((Math.PI * noModsSine) / 180);
 		}
 
-		if(canExit && controls.BACK)
+		if(canExit && controls.BACK #if android || FlxG.android.justReleased.BACK #end)
 		{
 			if(colorTween != null) {
 				colorTween.cancel();
