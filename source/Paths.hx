@@ -394,6 +394,11 @@ class Paths
 		return currentTrackedSounds.get(gottenPath);
 	}
 
+	public static var globalMods:Array<String> = [];
+
+	static public function getGlobalMods()
+		return globalMods;
+
 	static public function modFolders(key:String) { // changed the order so mod folders COULD BE FUCKING RECOGNIZ-
 		if(currentModDirectory != null && currentModDirectory.length > 0) {
 			var fileToCheck:String = mods(currentModDirectory #if !android + '/' #end + key);
@@ -457,11 +462,6 @@ class Paths
 	inline static public function modsAchievements(key:String) {
 		return modFolders('achievements/' + key + '.json');
 	}*/
-
-	public static var globalMods:Array<String> = [];
-
-	static public function getGlobalMods()
-		return globalMods;
 
 	static public function pushGlobalMods() // prob a better way to do this but idc
 	{
