@@ -129,6 +129,9 @@ class OptionsState extends MusicBeatState
 
 		if (controls.ACCEPT) {
 			openSelectedSubstate(options[curSelected]);
+			#if mobileC
+			removeVirutalPad(); // to remove the spamming in a substate
+			#end
 		}
 	}
 	
