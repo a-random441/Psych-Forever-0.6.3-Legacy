@@ -203,6 +203,10 @@ class FreeplayState extends MusicBeatState
 		text.scrollFactor.set();
 		add(text);
 		super.create();
+
+		#if mobileC
+        addVirtualPad(LEFT_FULL, A_B_X_Y);
+        #end
 	}
 
 	override function closeSubState() {
@@ -326,13 +330,13 @@ class FreeplayState extends MusicBeatState
 			MusicBeatState.switchState(new MainMenuState());
 		}
 
-		if(ctrl)
+		if(ctrl #if mobileC || virtualPad.buttonX.justPressed #end)
 		{
 			persistentUpdate = false;
 			openSubState(new GameplayChangersSubstate());
 		}
 
-		if((ClientPrefs.autoPlayFreeplaySongs || space) && (instPlaying != curSelected))
+		if((ClientPrefs.autoPlayFreeplaySongs || space #if mobileC || virtualPad.buttonY.justPressed #end) && (instPlaying != curSelected))
 		{
 			#if PRELOAD_ALL
 			destroyFreeplayVocals();

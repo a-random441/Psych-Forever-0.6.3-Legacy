@@ -115,6 +115,10 @@ class WeekEditorState extends MusicBeatState
 
 		FlxG.mouse.visible = true;
 
+		#if mobileC
+		addVirtualPad(NONE, A);
+		#end
+
 		super.create();
 	}
 
@@ -436,7 +440,7 @@ class WeekEditorState extends MusicBeatState
 				FlxG.sound.volumeUpKeys = [];
 				blockInput = true;
 
-				if(FlxG.keys.justPressed.ENTER) inputText.hasFocus = false;
+				if(FlxG.keys.justPressed.ENTER #if mobileC || virtualPad.buttonA.justPressed #end) inputText.hasFocus = false;
 				break;
 			}
 		}
@@ -626,6 +630,9 @@ class WeekEditorFreeplayState extends MusicBeatState
 
 		addEditorBox();
 		changeSelection();
+		#if mobileC
+		addVirtualPad(UP_DOWN, A);
+		#end
 		super.create();
 	}
 	
@@ -808,7 +815,7 @@ class WeekEditorFreeplayState extends MusicBeatState
 			FlxG.sound.muteKeys = TitleState.muteKeys;
 			FlxG.sound.volumeDownKeys = TitleState.volumeDownKeys;
 			FlxG.sound.volumeUpKeys = TitleState.volumeUpKeys;
-			if(FlxG.keys.justPressed.ESCAPE) {
+			if(FlxG.keys.justPressed.ESCAPE #if mobileC || virtualPad.buttonA.justPressed #end) {
 				MusicBeatState.switchState(new editors.MasterEditorMenu());
 				FlxG.sound.playMusic(Paths.music('freakyMenu'));
 			}

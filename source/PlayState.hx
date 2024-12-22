@@ -1256,6 +1256,12 @@ class PlayState extends MusicBeatState
 		timeTxt.cameras = [camHUD];
 		doof.cameras = [camHUD];
 
+		#if mobileC
+        addMobileControls(); //if hud disappears add false inside to ().
+		addVirtualPadCamera(); //if hud disappears add false inside to ().
+		mobileControls.visible = true;
+        #end
+
 		// if (SONG.song == 'South')
 		// FlxG.camera.alpha = 0.7;
 		// UI_camera.zoom = 1;
